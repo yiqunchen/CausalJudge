@@ -6,19 +6,19 @@
 ### TODO:
 I will use this section to track what things we wanted to do to move this project forward (in rough order of importance?):
 #### For the causal mediation analysis 
-- [] Download all pdfs used in the review (is this already done? If not we can easily do it by either searching it on PubMed and/or grab it from publisher).
-- [] Extract all texts/table from the paper.
-- [] Adapt Cathy's code pipeline to generate structured output like `json` so it's easier to parse and analyze.
-- [] Run the prompts to all the review data 
-- [] Pick a few papers for human review
+- [ ] Download all pdfs used in the review (is this already done? If not we can easily do it by either searching it on PubMed and/or grab it from the publisher).
+- [ ] Extract all texts/table from the paper.
+- [ ] Adapt Cathy's code pipeline to generate structured output like `json` so it's easier to parse and analyze.
+- [ ] Run the prompts to all the review data 
+- [ ] Pick a few papers for human review
 
 #### For the Cochrane databases:
-- [] I think we should start tabulating some questions we can ask based on the downloaded data, and try to understand which ones are the most interesting (we can check in w/ Liz).
-- [] Experiment with LLM-based assessment of risk of bias.
-- [] Experiment with LLM-based extraction of the study characteristics.
+- [ ] I think we should start tabulating some questions we can ask based on the downloaded data, and try to understand which ones are the most interesting (we can check in w/ Liz).
+- [ ] Experiment with LLM-based assessment of risk of bias.
+- [ ] Experiment with LLM-based extraction of the study characteristics.
 
 #### More datasets:
-
+TBD
 
 ### Functions:
 1. `web-crawl-download-cochrane.py` is the function that runs a webcrawler using selenium that performs interactive crawling (it's annoying to scrape since we need to click on a bunch of buttons...). I don't think you need to interact with this function too much, and AI really wrote most of it lol. That said, good to have the reference to know how we might be able to include other information and datasets in the future.
