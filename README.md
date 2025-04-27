@@ -7,10 +7,10 @@
 I will use this section to track what things we wanted to do to move this project forward (in rough order of importance?):
 #### For the causal mediation analysis 
 - [X] [Downloaded pdf](https://www.dropbox.com/scl/fo/8s4hvd01ar1m2zexbdajl/AJVOrh7nSYOFYwo5N9CNgxI?rlkey=r3stigqixv7vtezi8xpyyul3a&dl=0) ~~Download all pdfs used in the review (is this already done? If not we can easily do it by either searching it on PubMed and/or grab it from the publisher).~~
-- [ ] Extract all texts/table from the paper.
-- [ ] Adapt Cathy's code pipeline to generate structured output like `json` so it's easier to parse and analyze.
-- [ ] Run the prompts to all the review data 
-- [ ] Pick a few papers for human review
+- [X] ~~Extract all texts/table from the paper.~~ Saved in `PMID_all_text.jsonl`.
+- [X] ~~Adapt Cathy's code pipeline to generate structured output like `json` so it's easier to parse and analyze.~~ Preliminary code at `cathy-code-causal-mediation.ipynb`.
+- [X] ~~Run the prompts to all the review data~~. Preliminary code at `cathy-code-causal-mediation.ipynb`.
+- [ ] Pick a few papers for human review. **Could you take this Cathy?**
 
 #### For the Cochrane databases:
 - [ ] I think we should start tabulating some questions we can ask based on the downloaded data, and try to understand which ones are the most interesting (we can check in w/ Liz).
