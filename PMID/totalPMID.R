@@ -37,7 +37,9 @@ read_form <- function(path) {
 }
 
 # Use the read_form function when reading each file
-dfs <- lapply(paths, read_form)
+paths_full <- unlist(lapply(paths, function(x){
+  paste0("~/Dropbox/causaljudge-data/Mediation literature review/Extractions/",x)}))
+dfs <- lapply(paths_full, read_form)
 
 # Now bind all data frames together
 master_df <- bind_rows(dfs, .id = "source")
