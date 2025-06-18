@@ -1,6 +1,6 @@
 # First code file in CausalJudge Series
 # Examines how many paper are still accessible to us and can be automatically extracted. 
-# Answer is 180
+# Answer would be 180
 
 library(readxl)
 library(tidyverse)

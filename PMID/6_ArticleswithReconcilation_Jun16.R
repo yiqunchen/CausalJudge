@@ -1,5 +1,5 @@
 # Sixth code file in CausalJudge Series
-# These are the PMID for articles that human reviewers once need reconciliation
+# These are the PMID for articles that human reviewers once need reconciliation. 
 
 25528759
 25741308

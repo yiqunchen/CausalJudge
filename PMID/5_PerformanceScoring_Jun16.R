@@ -1,6 +1,5 @@
 # Fifth code file in CausalJudge Series
-# Help to create table 1 and 2 (under a total of 148 articles)
-
+# Help to create table 1 and 2 (originally under a total of 148 articles)
 
 library(readxl)
 library(tidyverse)

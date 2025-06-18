@@ -1,6 +1,7 @@
-# This is the third code file in Causal Judge Series
+# Third code file in Causal Judge Series
 # master_df got from first code file, # compiled_df got from the second code file
 # This is a subfile trying list out the 32 articles that left raw (not encoded into binary form)
+
 library(dplyr)
 library(tidyr)
 

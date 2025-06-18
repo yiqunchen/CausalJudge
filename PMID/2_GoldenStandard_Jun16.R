@@ -1,6 +1,6 @@
 # Second code file in CausalJudge Series
 # Examines we have golden standard judgement on how many papers
-# Answer is 148
+# Answer would be 148
 
 library(readr)
 library(dplyr)
