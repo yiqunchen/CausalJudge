@@ -13,6 +13,7 @@ I will use this section to track what things we wanted to do to move this projec
 - [X] ~~Pick a few papers for human review.~~ From meeting with Cathy, the automated extraction process yields good end-to-end results compared to manual copying and pasting. We should make sure to mention this in the write-up.
 - [X] The binary decisions for all 180 articles—along with the gold standard and GPT’s responses under different prompts—are compiled in `180FinalResult_Jun17.xlsx` within the PMID folder. Supporting subfiles, such as `extracted_full_causalcode.csv`, `extracted_full_explain.csv,`, ``extracted_full_causaluncertain.csv`, and `extracted_full_causaluncertain2.csv`, are also included and together form the basis of the final result.  
 - [X] Four Python files—`causalcode.py`, `causalexplain.py`, `causaluncertain.py`, and `causaluncertain2.py`—contain the code and corresponding prompts used in the analysis.
+- [X] The scripts `1_dataframe_count_Jun16.R` through `6_ArticleswithReconcilation_Jun16.R`, are numbered R scripts used sequentially in the analysis workflow. 
 - [ ] Write up the basic findings.
 - [ ] Analyzing qualitative response using LLM and pick some for human review.
 - [ ] Analyze accuracy stratified by journal/year of publication **it would be interesting to see if whether certain fields/topics are associated with lower accuracy; @cathy**
