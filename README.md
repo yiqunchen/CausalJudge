@@ -1,16 +1,22 @@
 ## CausalJudge: a project on LLM Evaluation of Causal Claims and Methodological Assumptions
 
 
-- Dropbox link to the data: https://www.dropbox.com/scl/fo/cnybhopuhocm339vp29dq/AM5fGE_1yYiNjUTIsci9GnY?rlkey=qqpdq45opol5dgyiyt69ue36s&st=qii4ntuj&dl=0. Right now this only has Cohrane Review Data with an example zip file pushed to the repo. Bascially, after unarchiving, you will get the underlying metadata and analysis folks have performed for these meta-analysis.
+- Dropbox link to the data: https://www.dropbox.com/scl/fo/cnybhopuhocm339vp29dq/AM5fGE_1yYiNjUTIsci9GnY?rlkey=qqpdq45opol5dgyiyt69ue36s&st=qii4ntuj&dl=0. Right now this only has Cohrane Review Data with an example zip file pushed to the repo. Basically, after unarchiving, you will get the underlying metadata and analysis that the folks have performed for these meta-analyses.
 
 ### TODO:
 I will use this section to track what things we wanted to do to move this project forward (in rough order of importance?):
 #### For the causal mediation analysis 
 - [X] [Downloaded pdf](https://www.dropbox.com/scl/fo/8s4hvd01ar1m2zexbdajl/AJVOrh7nSYOFYwo5N9CNgxI?rlkey=r3stigqixv7vtezi8xpyyul3a&dl=0) ~~Download all pdfs used in the review (is this already done? If not we can easily do it by either searching it on PubMed and/or grab it from the publisher).~~
-- [ ] Extract all texts/table from the paper.
-- [ ] Adapt Cathy's code pipeline to generate structured output like `json` so it's easier to parse and analyze.
-- [ ] Run the prompts to all the review data 
-- [ ] Pick a few papers for human review
+- [X] ~~Extract all texts/table from the paper.~~ Saved in `PMID_all_text.jsonl`.
+- [X] ~~Adapt Cathy's code pipeline to generate structured output like `json` so it's easier to parse and analyze.~~ Preliminary code at `cathy-code-causal-mediation.ipynb`.
+- [X] ~~Run the prompts to all the review data~~. Preliminary code at `cathy-code-causal-mediation.ipynb`.
+- [X] ~~Pick a few papers for human review.~~ From meeting with Cathy, the automated extraction process yields good end-to-end results compared to manual copying and pasting. We should make sure to mention this in the write-up.
+- [X] The binary decisions for all 180 articles—along with the gold standard and GPT’s responses under different prompts—are compiled in `180FinalResult_Jun17.xlsx` within the PMID folder. Supporting subfiles, such as `extracted_full_causalcode.csv`, `extracted_full_explain.csv,`, ``extracted_full_causaluncertain.csv`, and `extracted_full_causaluncertain2.csv`, are also included and together form the basis of the final result.  
+- [X] Four Python files—`causalcode.py`, `causalexplain.py`, `causaluncertain.py`, and `causaluncertain2.py`—contain the code and corresponding prompts used in the analysis.
+- [X] The scripts `1_dataframe_count_Jun16.R` through `6_ArticleswithReconcilation_Jun16.R`, are numbered R scripts used sequentially in the analysis workflow. 
+- [ ] Write up the basic findings.
+- [ ] Analyzing qualitative response using LLM and pick some for human review.
+- [ ] Analyze accuracy stratified by journal/year of publication **it would be interesting to see if whether certain fields/topics are associated with lower accuracy; @cathy**
 
 #### For the Cochrane databases:
 - [ ] I think we should start tabulating some questions we can ask based on the downloaded data, and try to understand which ones are the most interesting (we can check in w/ Liz).
