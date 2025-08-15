@@ -2,6 +2,26 @@
 
 A comprehensive evaluation framework for assessing large language models' ability to extract causal mediation information from scientific literature.
 
+## TL;DR - Quick Reference
+
+### 📍 Key Locations
+- **Prompt Configurations**: See `causal_evaluation.py` lines 136-295 for all prompt templates (basic, detailed, examples)
+- **Final Results (JSON)**: `results/[model_name]/predictions_[model]_[prompt_type].json` and `metrics_[model]_[prompt_type].json`
+- **Final Figures**: `figures/final_plots/` - Contains all publication-ready plots (accuracy, F1, AUC, PR-AUC, precision, recall)
+- **Human Baseline Data**: `PMID/GoldenStandard180.csv` - Ground truth annotations from expert consensus
+
+### 🚀 Quickest Start
+```bash
+# Run evaluation
+python run_single_evaluation.py --model gpt-4o --prompt_type detailed
+
+# View results
+cat results/gpt-4o/metrics_gpt-4o_detailed.json
+
+# Generate plots
+python generate_final_plots_with_human.py
+```
+
 ## Overview
 
 This repository contains the code and data for evaluating LLM performance on 14 key criteria in causal mediation analysis, including temporal ordering, covariate adjustment, assumption discussions, and sensitivity analyses.
