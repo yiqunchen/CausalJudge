@@ -1,0 +1,151 @@
+{
+  "run_id": 5,
+  "model": "gpt-4o",
+  "prompt_type": "detailed",
+  "temperature": 0.5,
+  "metrics": {
+    "Randomized Exposure": {
+      "accuracy": 0.9722222222222222,
+      "precision": 0.9333333333333333,
+      "recall": 0.9545454545454546,
+      "f1": 0.9438202247191011,
+      "auc": 0.5244819518716578,
+      "pr_auc": 0.2669801462904911,
+      "n_samples": 180
+    },
+    "Causal Mediation": {
+      "accuracy": 0.5611111111111111,
+      "precision": 0.09195402298850575,
+      "recall": 1.0,
+      "f1": 0.16842105263157894,
+      "auc": 0.829578488372093,
+      "pr_auc": 0.23958333333333331,
+      "n_samples": 180
+    },
+    "Examined Mediator-Outcome Linearity": {
+      "accuracy": 0.9166666666666666,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "auc": 0.49074870912220303,
+      "pr_auc": 0.07711287420589746,
+      "n_samples": 180
+    },
+    "Examined Exposure-Mediator Interaction": {
+      "accuracy": 0.7611111111111111,
+      "precision": 0.12244897959183673,
+      "recall": 1.0,
+      "f1": 0.21818181818181817,
+      "auc": 0.878352490421456,
+      "pr_auc": 0.12416666666666665,
+      "n_samples": 180
+    },
+    "Covariates in Exposure-Mediator Model": {
+      "accuracy": 0.7388888888888889,
+      "precision": 0.7222222222222222,
+      "recall": 0.8210526315789474,
+      "f1": 0.7684729064039408,
+      "auc": 0.7765325077399381,
+      "pr_auc": 0.7605574767546467,
+      "n_samples": 180
+    },
+    "Covariates in Exposure-Outcome Model": {
+      "accuracy": 0.7333333333333333,
+      "precision": 0.6861313868613139,
+      "recall": 0.9494949494949495,
+      "f1": 0.7966101694915254,
+      "auc": 0.7707320114727523,
+      "pr_auc": 0.73790628451607,
+      "n_samples": 180
+    },
+    "Covariates in Mediator-Outcome Model": {
+      "accuracy": 0.7,
+      "precision": 0.6717557251908397,
+      "recall": 0.8888888888888888,
+      "f1": 0.7652173913043478,
+      "auc": 0.7538346427235316,
+      "pr_auc": 0.7329460740276891,
+      "n_samples": 180
+    },
+    "Control for Baseline Mediator": {
+      "accuracy": 0.9222222222222223,
+      "precision": 0.7142857142857143,
+      "recall": 0.6521739130434783,
+      "f1": 0.6818181818181818,
+      "auc": 0.83550263085018,
+      "pr_auc": 0.6118912166325804,
+      "n_samples": 180
+    },
+    "Control for Baseline Outcome": {
+      "accuracy": 0.9111111111111111,
+      "precision": 0.6363636363636364,
+      "recall": 1.0,
+      "f1": 0.7777777777777778,
+      "auc": 0.9707471804511278,
+      "pr_auc": 0.7663221008180578,
+      "n_samples": 180
+    },
+    "Temporal Ordering Exposure Before Mediator": {
+      "accuracy": 0.7444444444444445,
+      "precision": 0.6403508771929824,
+      "recall": 0.9358974358974359,
+      "f1": 0.7604166666666666,
+      "auc": 0.8721091000502765,
+      "pr_auc": 0.7802410607564795,
+      "n_samples": 180
+    },
+    "Temporal Ordering Mediator Before Outcome": {
+      "accuracy": 0.6388888888888888,
+      "precision": 0.453781512605042,
+      "recall": 1.0,
+      "f1": 0.6242774566473989,
+      "auc": 0.8700764256319812,
+      "pr_auc": 0.6305633364456894,
+      "n_samples": 180
+    },
+    "Discussed Mediator Assumptions": {
+      "accuracy": 0.5833333333333334,
+      "precision": 0.43023255813953487,
+      "recall": 0.5873015873015873,
+      "f1": 0.4966442953020134,
+      "auc": 0.6359381359381359,
+      "pr_auc": 0.4623732180210586,
+      "n_samples": 180
+    },
+    "Sensitivity Analysis to Assumption": {
+      "accuracy": 0.7666666666666667,
+      "precision": 0.06818181818181818,
+      "recall": 0.75,
+      "f1": 0.125,
+      "auc": 0.8892045454545454,
+      "pr_auc": 0.09285714285714286,
+      "n_samples": 180
+    },
+    "Control for Other Post-Exposure Variables": {
+      "accuracy": 0.9,
+      "precision": 0.2777777777777778,
+      "recall": 0.5,
+      "f1": 0.35714285714285715,
+      "auc": 0.7376470588235294,
+      "pr_auc": 0.2985334713595583,
+      "n_samples": 180
+    },
+    "overall": {
+      "accuracy": 0.775,
+      "precision": 0.7334395925532697,
+      "recall": 0.799997889182058,
+      "f1": 0.7428533943643494,
+      "auc": 0.795215197889182,
+      "pr_auc": 0.49127827915254113,
+      "n_samples": 2520,
+      "n_positive": 625,
+      "n_classes": 2
+    }
+  },
+  "n_predictions": 180,
+  "output_file": "results/predictions_gpt_4o_detailed_run5_temp0.5.json",
+  "confidence_file": "results/predictions_gpt_4o_detailed_run5_temp0.5_confidence.json",
+  "checkpoint_file": "results/checkpoint_gpt_4o_detailed_run5_temp0.5.pkl",
+  "timestamp": "2025-08-07T00:08:16.625012",
+  "task_id": "gpt-4o_detailed_run5_temp0.5"
+}

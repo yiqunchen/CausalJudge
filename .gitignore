@@ -46,10 +46,11 @@ ehthumbs.db
 Thumbs.db
 
 # Project specific - outputs and generated files
-results/
 figures/*
 !figures/final_plots/
 !figures/final_plots/**
+
+# Checkpoint files
 *.pkl
 
 # Jupyter notebooks
