@@ -53,6 +53,9 @@ figures/*
 # Checkpoint files
 *.pkl
 
+# Raw results with temperature variations
+raw_results/
+
 # Jupyter notebooks
 .ipynb_checkpoints/
 
