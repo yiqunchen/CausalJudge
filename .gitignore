@@ -47,10 +47,17 @@ Thumbs.db
 
 # Project specific - outputs and generated files
 results/
-figures/
+figures/*
+!figures/final_plots/
+!figures/final_plots/**
 *.pkl
-*.pdf
-*.png
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Documentation files
+CLAUDE.md
+COMMANDS.md
 
 # Project specific - raw data sources (keep ground truth JSON)
 PMID/*.xlsx
