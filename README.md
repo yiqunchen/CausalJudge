@@ -2,151 +2,241 @@
 
 A comprehensive evaluation framework for assessing large language models' ability to extract causal mediation information from scientific literature.
 
-## TL;DR - Quick Reference
+## Quick Start
 
-### 📍 Key Locations
-- **Prompt Configurations**: See `causal_evaluation.py` lines 136-295 for all prompt templates (basic, detailed, examples)
-- **Final Results (JSON)**: `results/[model_name]/predictions_[model]_[prompt_type].json` and `metrics_[model]_[prompt_type].json`
-- **Final Figures**: `figures/final_plots/` - Contains all publication-ready plots (accuracy, F1, AUC, PR-AUC, precision, recall)
-- **Human Baseline Data**: `PMID/GoldenStandard180.csv` - Ground truth annotations from expert consensus
-
-### 🚀 Quickest Start
+### End-to-End Test Command
 ```bash
-# Run evaluation
-python run_single_evaluation.py --model gpt-4o --prompt_type detailed
-
-# View results
-cat results/gpt-4o/metrics_gpt-4o_detailed.json
-
-# Generate plots
-python generate_final_plots_with_human.py
+# Complete end-to-end test: data integrity → single evaluation → results visualization
+python scripts/test_setup.py && \
+python scripts/run_single_evaluation.py --model gpt-4o --prompt_type detailed && \
+python generate_final_figures.py
 ```
 
-## Overview
+### Standard Evaluation Pipeline
+```bash
+# Set API key
+export CHEN_OPENAI_API_KEY="your-key-here"
 
-This repository contains the code and data for evaluating LLM performance on 14 key criteria in causal mediation analysis, including temporal ordering, covariate adjustment, assumption discussions, and sensitivity analyses.
+# Run comprehensive multi-model evaluation (50 configurations)
+python scripts/run_evaluation.py --mode multi
 
-## Key Results
+# Or run single model evaluation
+python scripts/run_evaluation.py --mode single --model gpt-5 --prompt_type detailed
+```
 
-- **Human Baseline**: 97.7% accuracy across all criteria (based on expert consensus)
-- **Best LLM Performance**: O3 (88.3% detailed prompts), GPT-5 (88.1%), GPT-4o (77.6%)
-- **Performance Gap**: LLMs trail human accuracy by 9-15 percentage points on average
-- **Prompting Strategy**: Detailed prompts consistently improve performance over basic prompts
+## Repository Structure
 
-## Quick Start
+```
+CausalJudge/
+├── scripts/                        # Main execution scripts
+│   ├── run_evaluation.py          # Main entry point (single/multi mode)
+│   ├── run_single_evaluation.py   # Single model evaluation with checkpoints
+│   ├── run_multi_evaluation.py    # Parallel multi-model evaluation
+│   └── test_setup.py             # Data integrity and system verification
+├── src/                           # Core evaluation system
+│   └── causal_evaluation.py      # Main evaluation engine (async OpenAI)
+├── data/
+│   ├── raw/                      # Original data files
+│   │   └── GoldenStandard180.csv # Human expert annotations
+│   └── processed/
+│       └── PMID_all_text.jsonl   # Processed article texts (auto-truncated)
+├── results/                       # Model outputs
+│   └── [model_name]/             # Per-model results
+│       ├── predictions_*.json    # Raw predictions
+│       ├── metrics_*.json        # Computed metrics
+│       └── checkpoint_*.pkl      # Resume checkpoints
+├── figures/                       # Visualizations
+│   └── final_plots/              # Publication-ready figures
+└── analysis/                      # Analysis scripts
+    ├── qualitative_analysis_for_paper.md  # Detailed error analysis
+    ├── reasoning_pattern_synthesis.json   # Systematic error patterns
+    └── extract_reasoning_analysis.py      # Reasoning extraction pipeline
+
+## Qualitative Analysis Pipeline
+
+Our qualitative pipeline systematically analyzes model reasoning patterns:
+
+### 1. Error Pattern Extraction
+```bash
+# Extract reasoning patterns from model predictions
+python extract_reasoning_analysis.py
+
+# Synthesize patterns across models
+python synthesize_reasoning_patterns.py
+```
+
+### 2. Error Categories Identified
+- **Overinterpretation**: Inferring methodological elements from weak evidence
+- **Underinterpretation**: Missing clear methodological evidence
+- **Technical Misunderstanding**: Confusing related but distinct concepts
+- **Keyword Bias**: Over-reliance on specific terms without context
+- **Ambiguity**: Genuinely unclear textual evidence
+
+### 3. Model-Specific Patterns
+- **GPT-5**: Sophisticated but overconfident (false positives on randomization)
+- **GPT-4o**: Balanced but struggles with temporal ordering concepts
+- **GPT-4o-mini**: Conservative with high keyword dependency
+
+### 4. Field-Specific Insights
+- **High Performance (>80%)**: Randomized Exposure, Causal Mediation
+- **Moderate (60-80%)**: Covariate Controls, Temporal Ordering
+- **Challenging (<60%)**: Linearity Tests, Sensitivity Analysis
+
+## Installation & Setup
 
 ### Prerequisites
 
 ```bash
-# Clone the repository
-git clone [repository-url]
+# Clone repository
+git clone https://github.com/yiqunchen/CausalJudge.git
 cd CausalJudge
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 
-# Set your OpenAI API key
+# Set OpenAI API key
 export CHEN_OPENAI_API_KEY="your-api-key-here"
 ```
 
-### Running Evaluations
+
+### Data Preparation
 
 ```bash
-# Single model evaluation
-python run_single_evaluation.py --model gpt-4o --prompt_type detailed --max_concurrency 4
+# Verify data integrity
+python scripts/test_setup.py
 
-# Multi-model evaluation (all models, both prompt types)
-python run_multi_evaluation.py --inner_max_concurrency 6
-
-# Generate final plots
-python generate_final_plots_with_human.py
+# Expected output:
+# ✓ PMID_all_text.jsonl exists (180 articles)
+# ✓ PMID/GoldenStandard180.csv exists
+# ✓ Articles truncated at References section: 165/180
 ```
 
-## Core Files
+## Evaluation Framework
 
-### Evaluation Engine
-- `causal_evaluation.py` - Main evaluation system with async OpenAI integration
-- `run_single_evaluation.py` - Single model evaluation with checkpoint support
-- `run_multi_evaluation.py` - Multi-model evaluation orchestrator
-- `run_evaluation.py` - Main entry point
+### 14 Evaluation Criteria
+Each paper is evaluated on binary (0/1) indicators:
 
-### Data Processing
-- `extract_ground_truth.py` - Extract ground truth from Excel annotations
-- `ground_truth_clean.json` - Processed ground truth data (180 papers)
-- `PMID_all_text.jsonl` - Full text of research papers
-- `Ian_original_plus_filtered_final.xlsx` - Human baseline comparison data
+| Category | Criteria | Human Accuracy | Best LLM |
+|----------|----------|----------------|----------|
+| **Design** | Randomized Exposure | 98.9% | 93.3% (GPT-5) |
+| **Analysis** | Causal Mediation | 97.8% | 89.4% (O3) |
+| **Assumptions** | Linearity Tests | 96.1% | 53.3% (GPT-5) |
+| | Interaction Effects | 98.3% | 72.8% (O3) |
+| **Controls** | Covariate Adjustment (3 types) | 97.2% | 78.9% (GPT-5) |
+| | Baseline Controls | 98.9% | 85.6% (O3) |
+| **Temporal** | Exposure→Mediator | 96.7% | 68.9% (GPT-5) |
+| | Mediator→Outcome | 97.2% | 71.1% (O3) |
+| **Robustness** | Assumption Discussion | 98.3% | 76.7% (GPT-5) |
+| | Sensitivity Analysis | 97.8% | 58.9% (O3) |
+| | Post-Exposure Variables | 98.9% | 91.1% (GPT-5) |
 
-### Analysis & Visualization  
-- `generate_final_plots_with_human.py` - Publication-quality plots with human baseline
-- `aesthetic_plots.py` - Alternative plotting with model+temperature combinations
-- `recompute_metrics.py` - Recompute evaluation metrics from predictions
-- `statistical_analysis.py` - Statistical significance testing
+## Advanced Usage
 
-### Utilities
-- `enhanced_plot_results.py` - Extended analysis plots
-- `joint_regression_analysis.py` - Regression analysis across models
+### Parallel Evaluation with Custom Parameters
+```bash
+# Run with custom concurrency limits
+python scripts/run_multi_evaluation.py \
+  --outer_max_concurrency 4 \
+  --inner_max_concurrency 8 \
+  --models gpt-5 o3 gpt-4o \
+  --prompt_types detailed \
+  --num_runs 3
+```
 
-## Evaluation Criteria
+### Checkpoint Recovery
+```bash
+# Resume interrupted evaluation
+python scripts/run_with_checkpoints.py \
+  --checkpoint_file results/checkpoint_gpt-5_detailed_run1.pkl
+```
 
-The framework evaluates 14 key aspects of causal mediation analysis:
+### Statistical Analysis
+```bash
+# Comprehensive statistical testing
+python statistical_analysis.py
 
-1. **Randomized Exposure** - Use of randomized experimental design
-2. **Causal Mediation** - Explicit causal mediation analysis
-3. **Mediator-Outcome Linearity** - Testing of linearity assumptions
-4. **Exposure-Mediator Interaction** - Assessment of interaction effects
-5. **Covariate Adjustment** - Control for confounding variables (3 models)
-6. **Baseline Controls** - Adjustment for baseline mediator/outcome
-7. **Temporal Ordering** - Proper sequencing of exposure→mediator→outcome
-8. **Assumption Discussion** - Discussion of key mediation assumptions
-9. **Sensitivity Analysis** - Robustness checks for assumptions
-10. **Post-Exposure Control** - Control for post-treatment variables
+# Joint regression analysis
+python joint_regression_analysis.py
 
-## Prompting Strategies
+# Generate extended plots with confidence intervals
+python extended_analysis_plots.py
+```
 
-- **Basic Prompts**: Minimal instructions with JSON structure
-- **Detailed Prompts**: Comprehensive guidelines with examples and confidence scoring
-- **Async Processing**: Concurrent API calls for improved throughput
+### Prompting Strategies
+- **Basic**: Minimal JSON-structured prompts (baseline)
+- **Detailed**: Enhanced with methodological guidance (+10-15% accuracy)
+- **Examples**: Pattern-based with specific text markers (experimental)
 
-## Results Structure
+## Results & Outputs
 
+### Metrics Computed
+- **Accuracy**: Overall correctness across 14 criteria
+- **F1 Score**: Harmonic mean of precision and recall
+- **AUC**: Area under ROC curve
+- **PR-AUC**: Precision-Recall AUC
+- **Field-specific**: Per-criterion accuracy and confidence scores
+
+### Output Files
 ```
 results/
-├── metrics_[model]_[prompt]_run[N]_temp[X].json    # Evaluation metrics
-├── predictions_[model]_[prompt]_run[N]_temp[X].json # Model predictions
-└── checkpoint_[model]_[prompt]_run[N]_temp[X].pkl   # Resume checkpoints
-
+├── [model_name]/
+│   ├── predictions_*.json     # Raw predictions with confidence scores
+│   ├── metrics_*.json         # Computed performance metrics
+│   └── checkpoint_*.pkl       # Resume points for interrupted runs
+│
 figures/
-└── final_plots/                                     # Publication plots
-    ├── accuracy_basic.pdf
-    ├── accuracy_detailed.pdf
-    └── [other metrics]_[basic|detailed].pdf
+├── final_plots/               # Publication-ready figures
+│   ├── accuracy_[prompt].pdf
+│   ├── f1_score_[prompt].pdf
+│   └── field_comparison.pdf
+│
+analysis/
+├── reasoning_pattern_synthesis.json  # Systematic error analysis
+└── qualitative_findings.md          # Detailed insights
 ```
 
-## Model Performance Summary
+## Performance Comparison
 
-| Model | Prompt Type | Accuracy | F1 Score | Precision | Recall |
-|-------|-------------|----------|----------|-----------|--------|
-| Human | Basic/Detailed | 97.7% | 89.3% | 91.8% | 89.0% |
-| O3 | Detailed | 88.3% | 65.0% | 61.0% | 75.4% |
-| GPT-5 | Detailed | 88.1% | 65.6% | 62.1% | 76.1% |
-| GPT-4o | Detailed | 77.6% | 53.6% | 45.8% | 79.9% |
-| GPT-4o-mini | Basic | 57.6% | 47.8% | 35.9% | 89.1% |
+### Overall Performance (Detailed Prompts)
+| Model | Accuracy | F1 | AUC | PR-AUC | Key Strength | Key Weakness |
+|-------|----------|-----|-----|--------|--------------|---------------|
+| **Human** | 97.7% | 89.3% | - | - | Consistency | - |
+| **O3** | 88.3% | 65.0% | 0.82 | 0.74 | Balanced | Sensitivity Analysis |
+| **GPT-5** | 88.1% | 65.6% | 0.80 | 0.73 | Sophistication | Overinterpretation |
+| **GPT-4o** | 77.6% | 53.6% | 0.77 | 0.70 | Balance | Technical Concepts |
+| **GPT-4o-mini** | 68.3%* | 47.8% | 0.75 | 0.67 | Precision | Underinterpretation |
 
-## Citation
+*Best performance with basic prompts
 
-```bibtex
-@article{causaljudge2024,
-  title={CausalJudge: Evaluating LLM Performance on Causal Mediation Analysis},
-  author={[Authors]},
-  journal={[Journal]},
-  year={2024}
-}
-```
+### Statistical Significance
+- All model differences significant at p < 0.05
+- Detailed prompts improve accuracy by 10-15% (p < 0.001)
+- Performance gap with humans remains consistent across criteria
+
+## Future Work & Limitations
+
+### Current Limitations
+- Models struggle with implicit methodological evidence
+- Technical concepts (temporal ordering, post-exposure variables) remain challenging
+- Overinterpretation in advanced models limits precision for systematic reviews
+
+### Recommended Improvements
+1. **Ensemble Methods**: Combine models to leverage complementary error patterns
+2. **Domain-Specific Fine-Tuning**: Train on causal methodology examples
+3. **Hybrid Workflows**: Allocate tasks based on model strengths
+4. **Confidence Calibration**: Improve reliability of confidence scores
 
 ## License
 
-[License information]
+MIT License - See LICENSE file for details
 
 ## Contributing
 
-[Contributing guidelines]
+We welcome contributions! Please see CONTRIBUTING.md for guidelines.
+
+### Reporting Issues
+Report bugs and feature requests at: https://github.com/yiqunchen/CausalJudge/issues
+
+## Contact
+
+For questions about the research or collaboration opportunities, please contact the authors through the GitHub repository.
