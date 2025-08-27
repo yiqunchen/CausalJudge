@@ -24,16 +24,26 @@ python scripts/run_evaluation.py --mode single --model gpt-4o --prompt_type deta
 python scripts/run_evaluation.py --mode multi
 ```
 
-## Key Files
+## Project Structure
 
 ```
 CausalJudge/
-├── scripts/run_*.py                    # Evaluation runners
-├── causal_evaluation.py                # Core evaluation engine
-├── data/processed/PMID_all_text.jsonl  # 180 research articles
-├── data/processed/ground_truth_clean.json # Ground truth annotations
+├── scripts/                            # Executable entry points
+│   ├── run_evaluation.py              # Main evaluation runner
+│   ├── run_single_evaluation.py       # Single model evaluation
+│   ├── run_multi_evaluation.py        # Parallel evaluation
+│   └── test_setup.py                  # Data integrity tests
+├── src/                                # Core library code
+│   ├── causal_evaluation.py           # Main evaluation engine
+│   ├── statistical_analysis.py        # Statistical testing
+│   └── generate_final_plots_with_human.py # Plotting utilities
+├── data/
+│   ├── processed/
+│   │   ├── PMID_all_text.jsonl        # 180 research articles
+│   │   └── ground_truth_clean.json    # Ground truth annotations
 ├── results/[model]/predictions_*.json  # Model outputs
-└── synthesize_reasoning_patterns.py    # Error analysis
+├── synthesize_reasoning_patterns.py    # Error analysis (root level)
+└── qualitative_analysis_for_paper.md   # Analysis documentation
 ```
 
 ## Installation
@@ -79,6 +89,21 @@ python src/statistical_analysis.py
 ## License
 
 MIT License - See LICENSE file for details
+
+## Branch Protection
+
+This repository has a pre-push hook that prevents pushing to `main` branch unless data integrity tests pass:
+
+```bash
+# The hook automatically runs: python scripts/test_setup.py
+# Requires: 4/5 or 5/5 tests to pass (no OpenAI API key needed)
+# Tests: data files exist, proper format, PMID alignment, system initialization
+```
+
+To bypass for emergency (not recommended):
+```bash
+git push --no-verify origin main
+```
 
 ## Contributing
 

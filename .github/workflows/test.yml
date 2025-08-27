@@ -1,0 +1,71 @@
+name: CausalJudge Data Integrity Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas numpy scikit-learn openai asyncio
+        # Install other requirements if requirements.txt exists
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
+    - name: Run data integrity tests
+      run: |
+        echo "🔍 Running CausalJudge data integrity tests..."
+        echo "=============================================="
+        echo "ℹ️  NOTE: No OpenAI API key required - testing data files only"
+        echo ""
+        
+        # Ensure no API keys are set
+        unset CHEN_OPENAI_API_KEY
+        unset OPENAI_API_KEY
+        
+        # Run the test setup
+        python scripts/test_setup.py
+        
+        # Check that tests passed
+        if python scripts/test_setup.py 2>&1 | grep -q "4/5 tests passed\|5/5 tests passed"; then
+          echo "✅ All critical tests passed!"
+        else
+          echo "❌ Critical tests failed!"
+          exit 1
+        fi
+    
+    - name: Test import structure
+      run: |
+        echo "🔍 Testing import structure..."
+        python -c "
+        import sys
+        import os
+        sys.path.insert(0, 'src')
+        from causal_evaluation import CausalEvaluationSystem
+        print('✅ Core imports work correctly')
+        
+        # Test that system initializes without API key
+        system = CausalEvaluationSystem('dummy', 'gpt-4o-mini')
+        print('✅ System initialization works without API key')
+        "
+    
+    - name: Test scripts can run
+      run: |
+        echo "🔍 Testing script help commands..."
+        python scripts/run_evaluation.py --help
+        python scripts/run_single_evaluation.py --help  
+        python scripts/run_multi_evaluation.py --help
+        echo "✅ All script help commands work"

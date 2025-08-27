@@ -6,7 +6,11 @@ This allows you to interrupt and resume processing at any time.
 
 import os
 import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+# Add src directory to path 
+parent_dir = os.path.join(os.path.dirname(__file__), '..')
+src_dir = os.path.join(parent_dir, 'src')
+sys.path.insert(0, src_dir)
 from causal_evaluation import CausalEvaluationSystem
 
 def run_with_checkpoints():

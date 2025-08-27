@@ -9,7 +9,11 @@ import sys
 import json
 import argparse
 from datetime import datetime
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+# Add src directory to path 
+parent_dir = os.path.join(os.path.dirname(__file__), '..')
+src_dir = os.path.join(parent_dir, 'src')
+sys.path.insert(0, src_dir)
 from causal_evaluation import CausalEvaluationSystem
 
 def run_single_evaluation(api_key, model, prompt_type, run_id=1, temperature=None, resume_checkpoint=True, max_concurrency: int = 1):
