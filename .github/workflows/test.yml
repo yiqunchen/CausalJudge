@@ -14,14 +14,14 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Set up Python 3.10
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3.10"
     
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas numpy scikit-learn openai asyncio
+        pip install pandas numpy scikit-learn openai
         # Install other requirements if requirements.txt exists
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     
@@ -32,20 +32,17 @@ jobs:
         echo "ℹ️  NOTE: No OpenAI API key required - testing data files only"
         echo ""
         
-        # Ensure no API keys are set
-        unset CHEN_OPENAI_API_KEY
-        unset OPENAI_API_KEY
-        
-        # Run the test setup
-        python scripts/test_setup.py
-        
-        # Check that tests passed
-        if python scripts/test_setup.py 2>&1 | grep -q "4/5 tests passed\|5/5 tests passed"; then
+        # Run the test setup and capture output
+        if python scripts/test_setup.py 2>&1 | tee /tmp/test_output | grep -q "4/5 tests passed\|5/5 tests passed"; then
           echo "✅ All critical tests passed!"
         else
           echo "❌ Critical tests failed!"
+          cat /tmp/test_output
           exit 1
         fi
+      env:
+        CHEN_OPENAI_API_KEY: ""
+        OPENAI_API_KEY: ""
     
     - name: Test import structure
       run: |
