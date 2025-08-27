@@ -46,9 +46,9 @@ ehthumbs.db
 Thumbs.db
 
 # Project specific - outputs and generated files
-figures/*
-!figures/final_plots/
-!figures/final_plots/**
+figures/
+results/*.json
+!results/.gitkeep
 
 # Checkpoint files
 *.pkl
