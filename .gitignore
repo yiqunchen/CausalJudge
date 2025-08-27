@@ -70,6 +70,7 @@ PMID/~$*
 
 # Project specific - archived/unused code
 archive_unused/
+archive/
 gpt-gen-data/
 
 # Project specific - test files

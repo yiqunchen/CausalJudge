@@ -6,6 +6,7 @@ This allows you to interrupt and resume processing at any time.
 
 import os
 import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from causal_evaluation import CausalEvaluationSystem
 
 def run_with_checkpoints():
@@ -19,8 +20,8 @@ def run_with_checkpoints():
     
     # Configuration
     model = "gpt-4o-mini"  # Change this to your desired model
-    input_file = "PMID_all_text.jsonl"
-    ground_truth_file = "PMID/GoldenStandard180.csv"
+    input_file = "data/processed/PMID_all_text.jsonl"
+    ground_truth_file = "data/processed/ground_truth_clean.json"
     max_cases = 180
     
     # Output files
