@@ -88,6 +88,7 @@ PMID/~$*
 archive_unused/
 archive/
 gpt-gen-data/
+scripts/clean_repo.py
 
 # Project specific - test files
 test_*.json
