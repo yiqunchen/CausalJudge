@@ -32,8 +32,9 @@ def run_single_evaluation(api_key, model, prompt_type, run_id=1, temperature=Non
     """
     
     # Configuration
-    input_file = "PMID_all_text.jsonl"
-    ground_truth_file = "ground_truth_clean.json" 
+    # Standardized data locations
+    input_file = "data/processed/PMID_all_text.jsonl"
+    ground_truth_file = "data/processed/ground_truth_clean.json" 
     max_cases = 180
     
     # Output files with temperature suffix
@@ -91,7 +92,8 @@ def run_single_evaluation(api_key, model, prompt_type, run_id=1, temperature=Non
         if not os.path.exists(ground_truth_file):
             print(f"Ground truth not found, extracting from Excel file...")
             import subprocess
-            result = subprocess.run([sys.executable, 'extract_ground_truth.py'], 
+            # Call extractor within src so output lands in data/processed
+            result = subprocess.run([sys.executable, 'src/extract_ground_truth.py'], 
                                   capture_output=True, text=True)
             if result.returncode != 0:
                 raise Exception(f"Ground truth extraction failed: {result.stderr}")

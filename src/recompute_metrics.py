@@ -284,22 +284,24 @@ class StandaloneMetricsComputer:
         Returns:
             Dictionary with evaluation metrics
         """
-        # Check if clean ground truth exists, create if needed
+        # Ensure clean ground truth exists; generate if missing
         if not os.path.exists(ground_truth_file):
             print(f"Clean ground truth file not found: {ground_truth_file}")
             print("Running ground truth extraction...")
             import subprocess
-            result = subprocess.run([sys.executable, 'extract_ground_truth.py'], capture_output=True, text=True)
+            # Call extractor in src with standardized output in data/processed
+            result = subprocess.run([sys.executable, 'src/extract_ground_truth.py'], capture_output=True, text=True)
             if result.returncode != 0:
                 print(f"Ground truth extraction failed: {result.stderr}")
                 raise FileNotFoundError("Unable to create clean ground truth file")
             else:
                 print("Ground truth extraction completed successfully")
-        
+
+        # Load ground truth (JSON preferred)
         if ground_truth_file.endswith('.json'):
             ground_truth = self.load_ground_truth_from_json(ground_truth_file)
         else:
-            ground_truth = self.load_ground_truth_from_csv(ground_truth_file)
+            ground_truth = self.load_ground_truth_from_excel(ground_truth_file)
         predictions = self.load_model_predictions(predictions_file)
         
         if confidence_file and os.path.exists(confidence_file):
@@ -369,7 +371,7 @@ def main():
     
     # Ground truth file (Excel with original rows)
     # Use clean ground truth file (auto-generated if needed)
-    ground_truth_file = "ground_truth_clean.json"
+    ground_truth_file = "data/processed/ground_truth_clean.json"
     
     # Find all prediction files
     # Look for prediction files in both current directory and results directory

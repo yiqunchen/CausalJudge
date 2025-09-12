@@ -239,13 +239,15 @@ class GroundTruthExtractor:
         """
         print(f"\nSaving clean ground truth to {output_file}...")
         
+        # Ensure output directory exists
+        Path(output_file).parent.mkdir(parents=True, exist_ok=True)
         with open(output_file, 'w') as f:
             json.dump(ground_truth, f, indent=2)
         
         print(f"✓ Clean ground truth saved with {len(ground_truth)} PMIDs")
     
     def validate_against_pmids(self, ground_truth: Dict[str, Dict[str, Any]], 
-                              jsonl_file: str = "PMID_all_text.jsonl") -> Dict[str, Any]:
+                              jsonl_file: str = "data/processed/PMID_all_text.jsonl") -> Dict[str, Any]:
         """
         Validate ground truth PMIDs against the input JSONL file.
         
@@ -317,8 +319,8 @@ def main():
     
     # Input and output files
     excel_file = "PMID/180FinalResult_Jun17.xlsx"
-    clean_gt_file = "ground_truth_clean.json"
-    analysis_file = "ground_truth_analysis.json"
+    clean_gt_file = "data/processed/ground_truth_clean.json"
+    analysis_file = "data/processed/ground_truth_analysis.json"
     
     try:
         # Step 1: Load and validate raw ground truth
@@ -342,6 +344,7 @@ def main():
         validation_results = extractor.validate_against_pmids(clean_ground_truth)
         
         # Save analysis results
+        Path(analysis_file).parent.mkdir(parents=True, exist_ok=True)
         with open(analysis_file, 'w') as f:
             json.dump({
                 'field_analysis': analysis,

@@ -47,11 +47,27 @@ Thumbs.db
 
 # Project specific - outputs and generated files
 figures/
-results/*.json
+!figures/compress_prior_work.drawio.png
+# All generated results (predictions, metrics, checkpoints, reports)
+results/**
 !results/.gitkeep
+# Explicitly ignore common artifact types under results
+results/**/*.{csv,png,jpg,jpeg,svg,pdf,tex}
 
-# Checkpoint files
+# Keep repository lean: ignore generated figures except preview
+figures/**
+!figures/compress_prior_work.drawio.png
+# Explicitly ignore figure-side artifacts
+figures/**/*.{csv,tex}
+
+# Checkpoint files and LaTeX aux files
 *.pkl
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
 
 # Raw results with temperature variations
 raw_results/
@@ -80,3 +96,6 @@ test_*.py
 # Temporary files
 *.tmp
 *.temp
+
+# Intermediate analysis artifacts
+data/processed/ground_truth_analysis.json

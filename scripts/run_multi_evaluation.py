@@ -401,17 +401,17 @@ def run_multi_evaluation(inner_max_concurrency: int = 1):
             import subprocess
             
             # Recompute all metrics
-            result1 = subprocess.run([sys.executable, 'recompute_metrics.py'], 
+            result1 = subprocess.run([sys.executable, 'src/recompute_metrics.py'], 
                                    capture_output=True, text=True)
             if result1.returncode == 0:
                 print("✅ Metrics recomputed")
             
-            # Generate plots
-            result2 = subprocess.run([sys.executable, 'plot_results.py'], 
+            # Generate plots (final publication style)
+            result2 = subprocess.run([sys.executable, 'src/generate_final_plots_with_values.py'], 
                                    capture_output=True, text=True)
             if result2.returncode == 0:
-                print("✅ Plots generated")
-                print("📊 Check 'figures/' directory for visualization results")
+                print("✅ Plots generated (final values plots)")
+                print("📊 Check 'figures/final_plots' for visualization results")
                 
         except Exception as e:
             print(f"⚠️ Final analysis failed: {e}")
