@@ -1,4 +1,4 @@
-# CausalJudge: Evaluating LLM Performance on Causal Mediation Analysis
+# CausalJudge (Archived): Evaluating LLM Performance on Causal Mediation Analysis
 
 A comprehensive evaluation framework for assessing large language models' ability to extract causal mediation information from scientific literature.
 
@@ -20,8 +20,8 @@ python src/generate_final_plots_with_values.py
 
 ### Main Evaluation Commands
 ```bash
-# Set API key
-export CHEN_OPENAI_API_KEY="your-key-here"
+# Optional: Set API key (if attempting to run locally)
+export OPEN_AI_KEY="your-key-here"
 
 # Single model evaluation
 python scripts/run_evaluation.py --mode single --model gpt-4o --prompt_type detailed
@@ -66,15 +66,15 @@ CausalJudge/
 git clone https://github.com/yiqunchen/CausalJudge.git
 cd CausalJudge
 pip install -r requirements.txt
-export CHEN_OPENAI_API_KEY="your-key-here"
+export OPEN_AI_KEY="your-key-here"
 ```
 
-## E2E Pipeline
+## E2E Pipeline (Reference)
 
 - Prepare data:
   - Place `PMID/180FinalResult_Jun17.xlsx` (source) and `data/processed/PMID_all_text.jsonl` (articles) locally.
   - Build clean ground truth: `python src/extract_ground_truth.py` (writes `data/processed/ground_truth_clean.json`).
-- Run evaluation:
+- Run evaluation (may not function in archived state):
   - Single run: `python scripts/run_single_evaluation.py --model gpt-4o --prompt_type detailed`
   - Multi-run: `python scripts/run_evaluation.py --mode multi`
 - Recompute metrics (optional):
@@ -83,6 +83,7 @@ export CHEN_OPENAI_API_KEY="your-key-here"
   - `python src/generate_final_plots_with_values.py` → figures under `figures/`
 
 Notes:
+- Repository is archived; scripts may not run without local modifications and valid credentials.
 - All outputs under `results/` and `figures/` are gitignored to keep the repo lean.
 - Checkpoints (`*.pkl`) are also gitignored; runs are safely resumable.
 
@@ -104,51 +105,6 @@ The framework evaluates 14 binary criteria across 180 research papers:
 - **Temporal**: Exposure→Mediator, Mediator→Outcome ordering
 - **Robustness**: Assumption Discussion, Sensitivity Analysis, Post-Exposure Variables
 
-## Advanced Usage
-
-```bash
-# Custom parallel evaluation
-python scripts/run_multi_evaluation.py --inner_max_concurrency 4
-
-# Statistical analysis (optional)
-python src/statistical_analysis.py
-
-# Human reviewer evaluation and plots
-python src/human_evaluation.py
-python src/plot_human_vs_llm.py
-```
-
 ## License
 
 MIT License - See LICENSE file for details
-
-## Branch Protection
-
-This repository has a pre-push hook that prevents pushing to `main` branch unless data integrity tests pass:
-
-```bash
-# The hook automatically runs: python scripts/test_setup.py
-# Requires: 4/5 or 5/5 tests to pass (no OpenAI API key needed)
-# Tests: data files exist, proper format, PMID alignment, system initialization
-```
-
-To bypass for emergency (not recommended):
-```bash
-git push --no-verify origin main
-```
-
-## Contributing
-
-Report issues at: https://github.com/yiqunchen/CausalJudge/issues
-
-## Cleanup (Optional)
-
-To remove archived folders and intermediate artifacts locally:
-
-```bash
-# Dry-run
-python scripts/clean_repo.py
-
-# Apply deletions
-python scripts/clean_repo.py --apply
-```
