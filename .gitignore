@@ -78,6 +78,7 @@ raw_results/
 # Documentation files
 CLAUDE.md
 COMMANDS.md
+DEVELOPMENT_NOTES.md
 
 # Project specific - raw data sources (keep ground truth JSON)
 PMID/*.xlsx
