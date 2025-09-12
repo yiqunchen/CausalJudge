@@ -169,16 +169,16 @@ def main():
     parser.add_argument('--prompt_type', default='detailed', choices=['basic', 'detailed', 'examples'])
     parser.add_argument('--run_id', type=int, default=1, help='Run ID')
     parser.add_argument('--temperature', type=float, help='Temperature for model (overrides model default)')
-    parser.add_argument('--api_key', help='API key (or set OPEN_AI_KEY)')
+    parser.add_argument('--api_key', help='API key (or set OPENAI_API_KEY)')
     parser.add_argument('--no_resume', action='store_true', help='Do not resume from checkpoint')
     parser.add_argument('--max_concurrency', type=int, default=1, help='Max concurrent OpenAI calls (JSONL only)')
     
     args = parser.parse_args()
     
     # Get API key
-    api_key = args.api_key or os.getenv('OPEN_AI_KEY')
+    api_key = args.api_key or os.getenv('OPENAI_API_KEY')
     if not api_key:
-        print("Error: Please provide API key via --api_key or OPEN_AI_KEY environment variable")
+        print("Error: Please provide API key via --api_key or OPENAI_API_KEY environment variable")
         return 1
     
     try:

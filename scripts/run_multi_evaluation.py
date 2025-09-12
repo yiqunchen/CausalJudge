@@ -126,9 +126,9 @@ def run_multi_evaluation(inner_max_concurrency: int = 1):
     """
     
     # Get API key
-    api_key = os.getenv('OPEN_AI_KEY')
+    api_key = os.getenv('OPENAI_API_KEY')
     if not api_key:
-        print("❌ Please set OPEN_AI_KEY environment variable")
+        print("❌ Please set OPENAI_API_KEY environment variable")
         return False
     
     # Configuration

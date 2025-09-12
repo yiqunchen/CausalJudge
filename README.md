@@ -21,7 +21,7 @@ python src/generate_final_plots_with_values.py
 ### Main Evaluation Commands
 ```bash
 # Optional: Set API key (if attempting to run locally)
-export OPEN_AI_KEY="your-key-here"
+export OPENAI_API_KEY="your-key-here"
 
 # Single model evaluation
 python scripts/run_evaluation.py --mode single --model gpt-4o --prompt_type detailed
@@ -66,7 +66,7 @@ CausalJudge/
 git clone https://github.com/yiqunchen/CausalJudge.git
 cd CausalJudge
 pip install -r requirements.txt
-export OPEN_AI_KEY="your-key-here"
+export OPENAI_API_KEY="your-key-here"
 ```
 
 ## E2E Pipeline (Reference)
