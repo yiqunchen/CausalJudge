@@ -20,14 +20,20 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual environments
+# Virtual environments and secrets
 .env
+.env.*
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+*.key
+*.pem
+*credentials*
+*secret*
+.secrets/
 
 # IDE
 .vscode/
