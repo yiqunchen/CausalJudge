@@ -1,4 +1,4 @@
-# CausalJudge (Archived): Evaluating LLM Performance on Causal Mediation Analysis
+# Evaluating LLM Performance on Methods Review for Causal Mediation Analysis
 
 A comprehensive evaluation framework for assessing large language models' ability to extract causal mediation information from scientific literature.
 
@@ -82,19 +82,6 @@ export OPENAI_API_KEY="your-key-here"
 - Visualize:
   - `python src/generate_final_plots_with_values.py` → figures under `figures/`
 
-Notes:
-- Repository is archived; scripts may not run without local modifications and valid credentials.
-- All outputs under `results/` and `figures/` are gitignored to keep the repo lean.
-- Checkpoints (`*.pkl`) are also gitignored; runs are safely resumable.
-
-## Error Analysis
-
-```bash
-# Analyze model reasoning patterns and extract systematic error types
-python synthesize_reasoning_patterns.py
-```
-
-Outputs: `reasoning_pattern_synthesis.json` and `qualitative_analysis_for_paper.md`
 
 ## Evaluation Criteria
 
