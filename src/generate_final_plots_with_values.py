@@ -109,12 +109,13 @@ def load_metrics_data():
                             pass
             
             if temp is None and "temp" in rest:
-                temp_match = rest.split("temp")[-1]
-                temp_match = temp_match.replace(".json", "")
-                try:
-                    temp = float(temp_match)
-                except:
-                    pass
+                # Handle temp_default (or missing numeric temp) by assigning model-specific defaults
+                model_lower = model_part.lower()
+                if "gpt-5" in model_lower or "o3" in model_lower:
+                    temp = 1.0
+                else:
+                    # Default for other models (e.g., gpt-4o variants) is 0.0
+                    temp = 0.0
             
             if run_num is None or temp is None:
                 continue
@@ -177,12 +178,17 @@ def calculate_field_statistics(data, temp_filter=None):
         if temp_filter is not None:
             # Use specific temperature filter
             target_temps = temp_filter
-        elif "gpt-5" in model_prompt.lower() or "o3" in model_prompt.lower():
-            # Use temp=1.0 for GPT-5 and O3
-            target_temps = [1.0]
         else:
-            # Use temp=0.5 for GPT-4o models
-            target_temps = [0.5]
+            lower_name = model_prompt.lower()
+            if "gpt-5" in lower_name or "o3" in lower_name:
+                # Use temp=1.0 (or default) for GPT-5 and O3
+                target_temps = [1.0]
+            elif "gpt-4o" in lower_name:
+                # Use temp=1.0 for GPT-4o variants
+                target_temps = [1.0]
+            else:
+                # Fallback temperature filter for other models
+                target_temps = [0.5]
         
         # Collect all runs for the target temperatures
         runs_at_temp = [(run, temp) for (run, temp) in runs_data.keys() if temp in target_temps]
@@ -457,10 +463,11 @@ def main():
     metrics_to_plot = ['accuracy', 'precision', 'recall', 'f1', 'auc', 'pr_auc']
     prompt_types = ['basic', 'detailed']
     
+    suffix = "_temp1.0"
     for metric in metrics_to_plot:
         for prompt_type in prompt_types:
-            print(f"\nPlotting {metric} for {prompt_type} prompts...")
-            plot_metric_by_prompt(stats, metric, prompt_type)
+            print(f"\nPlotting {metric} for {prompt_type} prompts{suffix}...")
+            plot_metric_by_prompt(stats, metric, prompt_type, suffix=suffix)
     
     print("\n" + "=" * 60)
     print("✓ ALL PLOTS GENERATED SUCCESSFULLY!")
